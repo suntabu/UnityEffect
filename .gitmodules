@@ -1,0 +1,3 @@
+[submodule "Assets/UnityToolKit"]
+	path = Assets/UnityToolKit
+	url = https://github.com/suntabu/UnityToolKit.git
