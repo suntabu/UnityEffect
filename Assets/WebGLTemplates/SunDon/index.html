@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | %UNITY_WEB_NAME%</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-3664289447537902",
+            enable_page_level_ads: true
+        });
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109264420-1"
+            type="7101ec78d2384cc3353c651b-text/javascript"></script>
+    <script type="7101ec78d2384cc3353c651b-text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-109264420-1');
+    
+    </script>
+
+    <script src="%UNITY_WEBGL_LOADER_URL%"></script>
+    <script>
+        var unityInstance = UnityLoader.instantiate("unityContainer", "%UNITY_WEBGL_BUILD_URL%");
+    </script>
+    <style>
+        .webgl-content * {
+            border: 0;
+            margin: 0;
+            padding: 0
+        }
+
+        .webgl-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .webgl-content .logo, .progress {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+
+        .webgl-content .progress {
+            height: 18px;
+            width: 141px;
+            margin-top: 90px;
+        }
+
+        .webgl-content .footer {
+            margin-top: 5px;
+            height: 38px;
+            line-height: 38px;
+            font-family: Helvetica, Verdana, Arial, sans-serif;
+            font-size: 18px;
+        }
+
+        .webgl-content .footer .webgl-logo, .title, .fullscreen {
+            height: 100%;
+            display: inline-block;
+            background: transparent center no-repeat;
+        }
+
+
+        .webgl-content .footer .title {
+            margin-right: 10px;
+            float: right;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="webgl-content">
+    <div id="unityContainer" style="width: %UNITY_WIDTH%px; height: %UNITY_HEIGHT%px"></div>
+    <div class="footer">
+        <div class="webgl-logo"></div>
+        <div class="title">%UNITY_WEB_NAME%</div>
+    </div>
+</div>
+</body>
+</html>
