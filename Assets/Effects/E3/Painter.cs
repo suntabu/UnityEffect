@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -9,33 +10,34 @@ public class Painter : MonoBehaviour
     public Texture2D PenTexture;
     public float BrushScale = 1;
     [Range(0.01f, 2f)] public float DrawLerpDamp = 0.02f;
-    
+
     public Material PenMat, CanvasMat;
 
-    private RenderTexture mRenderTexture1,mRenderTexture2;
+    private RenderTexture mRenderTexture1, mRenderTexture2;
     private int mCanvasWidth, mCanvasHeight;
-    private bool mIsDrawing,mIsMouseDown;
+    private bool mIsDrawing, mIsMouseDown;
     private Vector3 mPreMousePosition;
     private Rect mUV = new Rect(0f, 0f, 1f, 1f);
+
     private void Awake()
     {
         mCanvasWidth = TargetTexture.width;
         mCanvasHeight = TargetTexture.height;
-        
+
         mRenderTexture1 = RenderTexture.GetTemporary(TargetTexture.width, TargetTexture.height);
         mRenderTexture2 = RenderTexture.GetTemporary(TargetTexture.width, TargetTexture.height);
-        
+
         PenMat.SetFloat("_BlendSrc", (int) BlendMode.SrcAlpha);
         PenMat.SetFloat("_BlendDst", (int) BlendMode.OneMinusSrcAlpha);
-        
+
         PenMat.SetTexture("_BrushTex", TargetTexture);
-        
-        
+
+
         CanvasMat.SetFloat("_BlendSrc", (int) BlendMode.One);
         CanvasMat.SetFloat("_BlendDst", (int) BlendMode.OneMinusSrcAlpha);
-        
+
         CanvasMat.SetTexture("_MainTex", mRenderTexture1);
-        
+
         CreateQuad(CanvasMat);
     }
 
@@ -43,27 +45,63 @@ public class Painter : MonoBehaviour
     {
     }
 
+    Mesh SpriteToMesh(Sprite sprite)
+    {
+        Mesh mesh = new Mesh();
+        mesh.vertices = Array.ConvertAll(sprite.vertices, i => (Vector3) i);
+        mesh.uv = sprite.uv;
+        mesh.triangles = Array.ConvertAll(sprite.triangles, i => (int) i);
+
+        return mesh;
+    }
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 100, 100), "hah"))
+        {
+            var tex = new Texture2D(mCanvasWidth, mCanvasHeight);
+            var rect = new Rect(0, 0, mCanvasWidth, mCanvasHeight);
+            RenderTexture.active = mRenderTexture1;
+            tex.ReadPixels(rect, 0, 0);
+            tex.Apply();
+            var sprite = Sprite.Create(tex, rect, Vector2.one * 0.5f,
+                100, 1, SpriteMeshType.Tight);
+
+            var mesh = SpriteToMesh(sprite);
+
+            var go = new GameObject("hah", typeof(MeshRenderer), typeof(MeshFilter));
+            go.transform.SetParent(this.transform);
+            go.transform.localScale = Vector3.one;
+            go.transform.localPosition = Vector3.zero;
+
+            go.GetComponent<MeshFilter>().mesh = mesh;
+            go.GetComponent<MeshRenderer>().material = CanvasMat;
+        }
+    }
+
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)){
+        if (Input.GetMouseButtonDown(0))
+        {
             mIsMouseDown = true;
             //Draw once when mouse down.
             //ClickDraw(Input.mousePosition,Camera.main,painterCanvas.penTex,painterCanvas.brushScale,painterCanvas.penMat,painterCanvas.renderTexture);
         }
-        else if(Input.GetMouseButton(0)){
-            if(mIsMouseDown)
+        else if (Input.GetMouseButton(0))
+        {
+            if (mIsMouseDown)
             {
                 //draw on mouse drag.
-                Drawing(Input.mousePosition,Camera.main);
+                Drawing(Input.mousePosition, Camera.main);
             }
         }
-        else if(Input.GetMouseButtonUp(0) && mIsMouseDown)
+        else if (Input.GetMouseButtonUp(0) && mIsMouseDown)
         {
             EndDraw();
             mIsMouseDown = false;
         }
     }
-    
+
     /// <summary>
     /// Convert hit point to uv position.
     /// </summary>
@@ -77,12 +115,12 @@ public class Painter : MonoBehaviour
         localPos.y += mCanvasHeight * 0.5f;
         return new Vector2(localPos.x / mCanvasWidth, localPos.y / mCanvasHeight);
     }
-    
+
     public void EndDraw()
     {
         mIsDrawing = false;
     }
-    
+
     public void Drawing(Vector3 screenPos, Camera camera = null, bool drawOutside = false)
     {
         if (camera == null) camera = Camera.main;
@@ -99,7 +137,7 @@ public class Painter : MonoBehaviour
             GL.PushMatrix();
             GL.LoadPixelMatrix(0, mCanvasWidth, mCanvasHeight, 0);
             RenderTexture.active = mRenderTexture1;
-  
+
             LerpDraw(ref screenPos, ref mPreMousePosition, drawOutside);
 
             RenderTexture.active = null;
@@ -107,7 +145,7 @@ public class Painter : MonoBehaviour
             mPreMousePosition = screenPos;
         }
     }
-    
+
     bool Intersect(ref Rect a, ref Rect b)
     {
         bool c1 = a.xMin < b.xMax;
@@ -116,7 +154,7 @@ public class Painter : MonoBehaviour
         bool c4 = a.yMax > b.yMin;
         return c1 && c2 && c3 && c4;
     }
-    
+
     void CreateQuad(Material mat)
     {
         Mesh m = new Mesh();
@@ -148,6 +186,7 @@ public class Painter : MonoBehaviour
 //        rend.sortingLayerName = sortingLayerName;
 //        rend.sortingOrder = sortingOrder;
     }
+
     void LerpDraw(ref Vector3 current, ref Vector3 prev, bool drawOutside)
     {
         float distance = Vector2.Distance(current, prev);
