@@ -46,7 +46,7 @@
 			
 			float3 FlowUVW (float2 uv, float2 flowVector, float time) {
                 float progress = frac(time);
-                progress = 1 - abs(1 - 2 * progress);
+                //progress = 1 - abs(1 - 2 * progress);
                 float3 uvw;
                 uvw.xy = uv - flowVector * progress;
                 uvw.z = 1;
