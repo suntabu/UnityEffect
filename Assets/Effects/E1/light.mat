@@ -63,9 +63,9 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _LightAngle: 53.95
-    - _LightRange: -0.1
-    - _LightWidth: 0.2
+    - _LightAngle: 38.57143
+    - _LightRange: 0.5650112
+    - _LightWidth: 0.3670201
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
