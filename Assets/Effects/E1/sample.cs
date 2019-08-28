@@ -32,9 +32,5 @@ public class sample : MonoBehaviour
         }));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }
