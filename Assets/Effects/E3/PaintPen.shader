@@ -16,7 +16,7 @@
 		_TileX("Tile x",Range(0,100))=1
 		_TileY("Tile y",Range(0,100))=1
 		_rect("Rect", Vector) = (0,0,0,0)
-		_canvas("Ratio Y", Vector) = (0,0,0,0) 
+		_canvas("Canvas", Vector) = (0,0,0,0) 
 		
 	}
 	SubShader

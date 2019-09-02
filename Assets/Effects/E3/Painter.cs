@@ -13,11 +13,11 @@ public class Painter : MonoBehaviour
 
     public Material PenMat, CanvasMat;
 
-    private RenderTexture mRenderTexture1, mRenderTexture2;
-    private int mCanvasWidth, mCanvasHeight;
+    public RenderTexture mRenderTexture1, mRenderTexture2;
+    public int mCanvasWidth, mCanvasHeight;
     private bool mIsDrawing, mIsMouseDown;
     private Vector3 mPreMousePosition;
-    private Rect mUV = new Rect(0f, 0f, 1f, 1f);
+    public Rect mUV = new Rect(0f, 0f, 1f, 1f);
 
     private void Awake()
     {
@@ -55,7 +55,7 @@ public class Painter : MonoBehaviour
         return mesh;
     }
 
-    private void OnGUI()
+    private void OnGUI1()
     {
         if (GUI.Button(new Rect(10, 10, 100, 100), "hah"))
         {
@@ -213,7 +213,7 @@ public class Painter : MonoBehaviour
                         new Vector4(-mCanvasWidth / 2, mCanvasHeight / 2 + transform.localPosition.y * 200,
                             mUV.width, mUV.height));
 
-                    Debug.Log(PenMat.GetVector("_rect") + " -> " + PenMat.GetVector("_canvas"));
+                    //Debug.Log(PenMat.GetVector("_rect") + " -> " + PenMat.GetVector("_canvas"));
                     Graphics.DrawTexture(rect, PenTexture, PenMat);
                 }
             }
