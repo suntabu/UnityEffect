@@ -6,15 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Effects/E5/demo.unity
+    path: Assets/Effects/E5/demo_5.unity
     guid: 771625d89587b004591ce48d297408da
   - enabled: 0
-    path: Assets/Effects/E4/demo.unity
+    path: Assets/Effects/E4/demo_4.unity
     guid: 08ff29ffea2ee7046b45145c4ec87cc5
   - enabled: 0
-    path: Assets/Effects/E3/demo.unity
+    path: Assets/Effects/E3/demo_3.unity
     guid: a59abe99284f9c942b693dd34ae997f3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Effects/E1/demo.unity
     guid: 498bccd3151b8f7438fee9b421b309b4
+  - enabled: 0
+    path: Assets/Effects/E10/demo_10.unity
+    guid: 246d54fb2642c45eca10b439e12f5e67
+  - enabled: 1
+    path: Assets/Effects/E11/demo_11.unity
+    guid: c2f8f6a8801714efe863c8a863c0ee29
   m_configObjects: {}
