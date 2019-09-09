@@ -1,8 +1,8 @@
-Shader "Unlit/SwitchImageNoMove"
+Shader "Unlit/SwitchImageNoPosition"
 {
 	Properties
 	{
-		_MainTex ("Texture", 2D) = "white" {}
+		_MainTex ("Texture", 2D) = "black" {}
 		_ToTex("Switch to",2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		_Progress ("Progress", Range (0.0, 1)) = 0
@@ -83,12 +83,12 @@ Shader "Unlit/SwitchImageNoMove"
 			    fixed4 from = tex2D(_MainTex, IN.texcoord);
 			    fixed4 to = tex2D(_ToTex, IN.texcoord);
 			    
-			    float pwidth = length(float2(ddx(IN.texcoord.x), ddy(IN.texcoord.y))) * 40;
+			    float pwidth = length(float2(ddx(IN.texcoord.x), ddy(IN.texcoord.y))) * 20;
                 
                 float v = smoothstep(p - pwidth, p + pwidth, IN.texcoord.y);
 			    fixed4 finalPixel;
-			    finalPixel.a = clamp((to.a + from.a) * _Color.a,0,1);
-			    finalPixel.rgb = v * to.rgb + (1-  v) * from.rgb;
+			    finalPixel.a = clamp(((1-v) *to.a +v *from.a) * _Color.a,0,1);
+			    finalPixel.rgb = v * from.rgba + (1-  v) * to.rgb;
                 finalPixel.rgb = (finalPixel.rgb  * _Color.rgb) * finalPixel.a;
 				return finalPixel;
 			}
