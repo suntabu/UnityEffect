@@ -40,19 +40,26 @@ Shader "Unlit/ParticleMask"
 				UNITY_FOG_COORDS(1)
 				float4 vertex : SV_POSITION;
 			};
-			
-			float2 calcUV2(float4 canvas, float2 pos, float2 uv)
+			uniform float4x4 _O2W;
+			uniform float2 _Pos;
+			uniform float2 _Scale;
+			float2 calcUV2(float4 canvas, float4 pos)
             {
-                float width = canvas.z;
-                float height = canvas.w;
+                float width = canvas.z * _Scale;
+                float height = canvas.w * _Scale;
             
+                float2 xdir = normalize(mul(_O2W, float3(10,0,0)).xy);
+                float2 ydir = normalize(mul(_O2W, float3(0,10,0)).xy);
+                
+                
+               float4 ori = float4(_Pos.x,_Pos.y,0,0);
+                
+                float4 vec = (pos - ori) * 100;
+//                vec.xy /= vec.w;
+                float u = (dot(vec.xy, xdir) + 0.5 * width) / width;
+                float v = (dot(vec.xy, ydir) + 0.5 * height) / height;
             
-                float x = pos.x * 100 - canvas.x;//- rect.z * 0.5;
-                float y = pos.y * 100 + height * 0.5;// - canvas.y;
-                float tileX = width;
-                float tileY = height;
-            
-                float2 result = float2(x/tileX, y/tileY);
+                float2 result = float2(u,v);
                 
                 return result;
             }
@@ -73,7 +80,7 @@ Shader "Unlit/ParticleMask"
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				o.uv1 = TRANSFORM_TEX(v.uv, _MaskTex);
 				
-				o.uv2 = calcUV2(_canvas,mul(unity_ObjectToWorld,v.vertex).xy,v.uv);
+				o.uv2 = calcUV2(_canvas,v.vertex);
 				UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
 			}

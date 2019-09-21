@@ -29,6 +29,7 @@ public class sample : MonoBehaviour
         slider3.onValueChanged.AddListener(new UnityAction<float>(t =>
         {
             mat.SetFloat("_LightRange",(t - 0.5f) * 2.5f);
+            
         }));
     }
 
